@@ -1,0 +1,12 @@
+@import "_colors";
+@import "_fonts";
+@import "bootstrap/bootstrap.min.scss";
+
+// contains global styling
+@import "_global";
+
+// To add additional scss files
+// create the .scss file within /src/assets/scss
+// then place an "@import "";" tag below
+
+// @import "scss file name";

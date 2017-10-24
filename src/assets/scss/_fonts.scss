@@ -1,0 +1,14 @@
+@import url('https://fonts.googleapis.com/css?family=Raleway:700,800');
+
+
+@mixin raleBold($font-size) {
+	font-family: 'Raleway', sans-serif !important;
+	font-weight: 700;
+	font-size:$font-size;
+}
+
+@mixin raleXB($font-size) {
+	font-family: 'Raleway', sans-serif !important;
+	font-weight: 800;
+	font-size:$font-size;
+}

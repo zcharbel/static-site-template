@@ -1,4 +1,7 @@
 # Build and Release Folders
+node_modules/
+build/
+production/
 bin/
 bin-debug/
 bin-release/
@@ -7,6 +10,8 @@ bin-release/
 
 # Other files and folders
 .settings/
+.sass-cache
+package-lock.json
 
 # Executables
 *.swf
