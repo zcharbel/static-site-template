@@ -7,7 +7,7 @@ module.exports = function(grunt) {
 		sass: {
 			dist: {
 				files: {
-					'src/assets/css/styles.css' : 'src/assets/scss/main.scss',
+					'src/assets/css/styles.css' : 'src/assets/scss/main.scss'
 				}
 			}
 		},
@@ -68,16 +68,6 @@ module.exports = function(grunt) {
 		clean: {
 		  production: ['production/'],
 		  includes: ['production/_includes/']
-		},
-		// this is for use when you are developing your website so you do not have to run
-		// individual commands every time you make an edit. Before making edits you have to
-		// run either "grunt" or "grunt watch". "grunt" builds all files before watch is used, 
-		// "grunt watch" does not.
-		watch: {
-			css: {
-				files: '**/*.scss',
-				tasks: ['sass']
-			}
 		},
 		// This is to copy any files needed in your dev build or release build.
 		// To run this alone use "grunt copy" within terminal. To target specific files
@@ -145,14 +135,38 @@ module.exports = function(grunt) {
 	    php: {
 	        dist: {
 	            options: {
-	                hostname: 'localhost',
+	                hostname: '127.0.0.1',
 	                port: 9000,
 	                base: 'src', // Project root 
-	                keepalive: true,
-	                open: true
+	                keepalive: false,
+	                open: false
 	            }
 	        }
-	    }
+	    },
+		browserSync: {
+			dist: {
+				bsFiles: {
+					src: [
+						'./src/assets/css/styles.css'
+					]
+				},
+				options: {
+					proxy: '<%= php.dist.options.hostname %>:<%= php.dist.options.port %>',
+	                watchTask: true,
+	                open: true
+				}
+			}
+		},
+		// this is for use when you are developing your website so you do not have to run
+		// individual commands every time you make an edit. Before making edits you have to
+		// run either "grunt" or "grunt watch". "grunt" builds all files before watch is used, 
+		// "grunt watch" does not.
+		watch: {
+			css: {
+				files: 'src/assets/scss/**/*.scss',
+				tasks: ['sass']
+			}
+		}
 	});
 	
 	// loadNpmTasks bring in required grunt modules for use within this file
@@ -168,6 +182,7 @@ module.exports = function(grunt) {
 	grunt.loadNpmTasks('grunt-text-replace');
 	grunt.loadNpmTasks('grunt-minify-html');
 	grunt.loadNpmTasks('grunt-php');
+	grunt.loadNpmTasks('grunt-browser-sync');
 	
 	// Within "registerTask"s you are able to build tasks that contain multiple tasks from above
 	// "registerTask('default')" can be run by just running "grunt" within terminal
@@ -175,7 +190,7 @@ module.exports = function(grunt) {
 	// of the names below within terminal
 	grunt.registerTask('default', ['watch']);
 	// when working in dev run 'grunt watch' to watch sass as you edit
-	grunt.registerTask('serve', ['php']);
+	grunt.registerTask('serve', ['php', 'browserSync', 'watch']);
 	grunt.registerTask('releasecopy', ['copy:fonts', 'copy:favicons']);
 	grunt.registerTask('build', ['clean:production', 'sass', 'php2html', 'cssmin', 'uglify', 'releasecopy', 'replace', 'clean:includes']);
 	grunt.registerTask('release', ['clean:production', 'sass', 'php2html', 'cssmin', 'imagemin', 'uglify', 'releasecopy', 'replacePaths', 'minifyHtml', 'clean:includes']);
