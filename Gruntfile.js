@@ -3,7 +3,6 @@ module.exports = function(grunt) {
 	grunt.initConfig({
 		pkg: grunt.file.readJSON('package.json'),
 		// this compiles your sass into css files
-		// to run this alone use "grunt sass" within terminal
 		sass: {
 			dist: {
 				files: {
@@ -12,7 +11,6 @@ module.exports = function(grunt) {
 			}
 		},
 		// this takes your css file and minifies it to save weight
-		// to run this alone use "grunt cssmin" within terminal
 		cssmin: {
 			target: {
 				files: {
@@ -21,7 +19,6 @@ module.exports = function(grunt) {
 			}
 		},
 		// this takes your main js file and minifies it to save weight
-		// to run this alone use "grunt uglify" within terminal
 		uglify: {
 			my_target: {
 				files: {
@@ -30,7 +27,6 @@ module.exports = function(grunt) {
 			}
 		},
 		// this optimizes your images for when you are ready to release your website
-		// to run this alone use "grunt imagemin" within terminal
 	    imagemin: {                          
 			dynamic: {
 				options: {
@@ -45,7 +41,6 @@ module.exports = function(grunt) {
 			}
 		},
 		// this compiles your .php and "_includes" .php files into singular .html files
-		// to run this alone use "grunt php2html" within terminal
 	    php2html: {
 			default: {
 				options: {
@@ -61,18 +56,13 @@ module.exports = function(grunt) {
 				}]
 			}
 		},
-		// this removes the _includes folder when you run either "grunt dev" or
-		// "grunt release" since they are not needed in the "build" or "release" folders
-		// to run this alone use "grunt clean" within terminal
-		//clean: ['build/production/','build/production/','build/_includes/'],
 		clean: {
-		  production: ['production/'],
-		  includes: ['production/_includes/']
+			// this removes the 'production' folder that is output during grunt tasks below
+			production: ['production/'],
+			// this removes the "_includes" folder from being included in your 'production' folder
+			includes: ['production/_includes/']
 		},
-		// This is to copy any files needed in your dev build or release build.
-		// To run this alone use "grunt copy" within terminal. To target specific files
-		// run "grunt copy:FILESTOCOPY". Change "FILESTOCOPY" to any of the tasks listed below
-		// (i.e. copy:css, copy:js, etc.)
+		// this copies over all fonts and favicons into your 'production' folder
 		copy: {
 			fonts: {
 				expand: true,
@@ -87,7 +77,9 @@ module.exports = function(grunt) {
 				dest: 'production'
 			}
 		},
+		// when making a release, this updates/removes .css and .js filepaths
 		replace: {
+			// updates files paths
 			updatePaths: {
 				src: ['production/**/*.html'],
 				overwrite: true,
@@ -108,6 +100,7 @@ module.exports = function(grunt) {
 					to: '<script src="assets/js/vendor'
 				}]
 			},
+			// removes global filepaths that have been minifed into the main.min.js file
 			removeVendorPaths: {
 				src: ['production/**/*.html'],
 				overwrite: true,
@@ -132,6 +125,7 @@ module.exports = function(grunt) {
 				}]
 	        }
 	    },
+	    // this is a local server
 	    php: {
 	        dist: {
 	            options: {
@@ -143,6 +137,7 @@ module.exports = function(grunt) {
 	            }
 	        }
 	    },
+	    // syncs the above server when there is a change made to styles.css
 		browserSync: {
 			dist: {
 				bsFiles: {
@@ -157,10 +152,7 @@ module.exports = function(grunt) {
 				}
 			}
 		},
-		// this is for use when you are developing your website so you do not have to run
-		// individual commands every time you make an edit. Before making edits you have to
-		// run either "grunt" or "grunt watch". "grunt" builds all files before watch is used, 
-		// "grunt watch" does not.
+		// this watches for any changes within SASS
 		watch: {
 			css: {
 				files: 'src/assets/scss/**/*.scss',
@@ -184,15 +176,16 @@ module.exports = function(grunt) {
 	grunt.loadNpmTasks('grunt-php');
 	grunt.loadNpmTasks('grunt-browser-sync');
 	
-	// Within "registerTask"s you are able to build tasks that contain multiple tasks from above
-	// "registerTask('default')" can be run by just running "grunt" within terminal
-	// If you want to run any of the others run "grunt TASKNAME", replace "TASKNAME" with any 
-	// of the names below within terminal
+	// These are registered task you can run within terminal
+	// if you're running something like MAMP while doing edits 'default' is all you need
 	grunt.registerTask('default', ['watch']);
-	// when working in dev run 'grunt watch' to watch sass as you edit
+	// to run a local php server with browserSync, run 'serve'
 	grunt.registerTask('serve', ['php', 'browserSync', 'watch']);
-	grunt.registerTask('releasecopy', ['copy:fonts', 'copy:favicons']);
-	grunt.registerTask('build', ['clean:production', 'sass', 'php2html', 'cssmin', 'uglify', 'releasecopy', 'replace', 'clean:includes']);
-	grunt.registerTask('release', ['clean:production', 'sass', 'php2html', 'cssmin', 'imagemin', 'uglify', 'releasecopy', 'replacePaths', 'minifyHtml', 'clean:includes']);
+	// this is used with the 'build' and 'release' tasks
+	grunt.registerTask('copyFontsFavs', ['copy:fonts', 'copy:favicons']);
+	// this is for debugging the output of php2html 
+	grunt.registerTask('build', ['clean:production', 'sass', 'php2html', 'cssmin', 'uglify', 'copyFontsFavs', 'replace', 'clean:includes']);
+	// this is when you are ready for relased which includes minifying HTML, CSS and JS, optimizing images and updates file paths for .min.xxx extensions
+	grunt.registerTask('release', ['clean:production', 'sass', 'php2html', 'cssmin', 'imagemin', 'uglify', 'copyFontsFavs', 'replace', 'minifyHtml', 'clean:includes']);
 	
 }
