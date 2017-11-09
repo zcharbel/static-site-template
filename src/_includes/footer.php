@@ -1,7 +1,8 @@
 		<!-- End Main Content Container -->
 		
 		<!--<script src="//ajax.googleapis.com/ajax/libs/jquery/1.11.1.jquery.min.js"></script>-->
-        <script>window.jQuery || document.write('<script src="<?php echo $ROOT; ?>assets/js/vendor/jquery-1.10.2.min.js"><\/script>')</script>
+        <script src="https://code.jquery.com/jquery-2.2.4.min.js" integrity="sha256-BbhdlvQf/xTY9gja0Dq3HiwQF8LaCRTXxZKRutelT44=" crossorigin="anonymous"></script>
+        
         <!-- Latest compiled and minified JavaScript -->
 		<script src="<?php echo $ROOT; ?>assets/js/vendor/bootstrap.min.js"></script>
         <script src="<?php echo $ROOT; ?>assets/js/main.js"></script>

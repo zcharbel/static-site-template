@@ -9,7 +9,7 @@
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },
-  "author": "Whole Interactive",
+  "author": "Zach Charbel",
   "license": "Self",
   "devDependencies": {
     "grunt": "^0.4.1",
@@ -21,6 +21,9 @@
     "grunt-contrib-sass": "^0.8.1",
     "grunt-contrib-uglify": "^0.5.1",
     "grunt-contrib-watch": "^0.6.1",
-    "grunt-php2html": "^0.1.10"
+    "grunt-php2html": "^0.1.10",
+    "grunt-text-replace": "0.4.0",
+    "grunt-minify-html": "^3.0.0",
+    "grunt-php": "^1.5.1"
   }
 }

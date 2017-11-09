@@ -12,6 +12,7 @@ bin-release/
 .settings/
 .sass-cache
 package-lock.json
+.DS_Store
 
 # Executables
 *.swf

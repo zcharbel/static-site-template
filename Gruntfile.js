@@ -1,4 +1,5 @@
 module.exports = function(grunt) {
+	
 	grunt.initConfig({
 		pkg: grunt.file.readJSON('package.json'),
 		// this compiles your sass into css files
@@ -15,7 +16,7 @@ module.exports = function(grunt) {
 		cssmin: {
 			target: {
 				files: {
-					'src/assets/css/styles.min.css': ['**/assets/css/styles.css']
+					'production/assets/css/styles.min.css': ['src/assets/css/styles.css']
 				}
 			}
 		},
@@ -24,7 +25,7 @@ module.exports = function(grunt) {
 		uglify: {
 			my_target: {
 				files: {
-					'src/assets/js/main.min.js': ['**/assets/js/main.js']
+					'production/assets/js/main.min.js': ['src/assets/js/vendor/modernizr-2.6.2.min.js', 'src/assets/js/vendor/bootstrap.min.js', 'src/assets/js/main.js']
 				}
 			}
 		},
@@ -37,9 +38,9 @@ module.exports = function(grunt) {
 				},                    
 				files: [{
 					expand: true,                  
-					cwd: 'src/assets/img/',                   
+					cwd: 'src/assets/imgs/',                   
 					src: ['**/*.{png,jpg,gif}'],   
-					dest: 'src/assets/_optimized-imgs/'
+					dest: 'production/assets/imgs/'
 				}]
 			}
 		},
@@ -48,13 +49,16 @@ module.exports = function(grunt) {
 	    php2html: {
 			default: {
 				options: {
-					// relative links should be renamed from .php to .html
 					processLinks: true,
 					htmlhint: false
 				},
-				files: [
-					{expand: true, cwd: 'src/', src: ['**/*.php'], dest: 'build', ext: '.html' }
-				]
+				files: [{
+					expand: true, 
+					cwd: 'src/', 
+					src: ['**/*.php'], 
+					dest: 'production/', 
+					ext: '.html' 
+				}]
 			}
 		},
 		// this removes the _includes folder when you run either "grunt dev" or
@@ -62,8 +66,8 @@ module.exports = function(grunt) {
 		// to run this alone use "grunt clean" within terminal
 		//clean: ['build/production/','build/production/','build/_includes/'],
 		clean: {
-		  general: ['build/','production/'],
-		  includes: ['build/_includes/']
+		  production: ['production/'],
+		  includes: ['production/_includes/']
 		},
 		// this is for use when you are developing your website so you do not have to run
 		// individual commands every time you make an edit. Before making edits you have to
@@ -72,19 +76,7 @@ module.exports = function(grunt) {
 		watch: {
 			css: {
 				files: '**/*.scss',
-				tasks: ['sass', 'copy:css']
-			},
-			scripts: {
-				files: ['src/assets/js/main.js'],
-				tasks: ['copy:js']
-			},
-			files: {
-				files: ['src/*'],
-				tasks: ['php2html']
-			},
-			img: {
-				files: ['src/assets/img/*'],
-				tasks: ['copy:img']
+				tasks: ['sass']
 			}
 		},
 		// This is to copy any files needed in your dev build or release build.
@@ -92,79 +84,77 @@ module.exports = function(grunt) {
 		// run "grunt copy:FILESTOCOPY". Change "FILESTOCOPY" to any of the tasks listed below
 		// (i.e. copy:css, copy:js, etc.)
 		copy: {
-		  css: {
-		    expand: true,
-		    cwd: 'src/assets/',
-		    src: 'css/styles.css',
-		    dest: 'build/assets/'
-		  },
-		  cssminified: {
-		    expand: true,
-		    cwd: 'src/assets/',
-		    src: 'css/styles.min.css',
-		    dest: 'production/assets/'
-		  },
-		  js: {
-		    expand: true,
-		    cwd: 'src/assets/',
-		    src: ['js/main.js', 'js/vendor/*'],
-		    dest: 'build/assets/'
-		  },
-		  jsminified: {
-		    expand: true,
-		    cwd: 'src/assets/',
-		    src: ['js/main.min.js', 'js/vendor/*'],
-		    dest: 'production/assets/'
-		  },
-		  img: {
-		    expand: true,
-		    cwd: 'src/assets/img/',
-		    src: ['**/*.{png,jpg,gif}'],
-		    dest: 'build/assets/img/'
-		  },
-		  imgoptimized: {
-		    expand: true,
-		    cwd: 'src/assets/_optimized-imgs',
-		    src: ['**/*.{png,jpg,gif}'],
-		    dest: 'production/assets/img/'
-		  },
-		  fonts: {
-		    expand: true,
-		    cwd: 'src/assets/fonts',
-		    src: ['*.{svg,eot,ttf,woff,woff2,otf}'],
-		    dest: 'build/assets/fonts'
-		  },
-		  fontsprod: {
-		    expand: true,
-		    cwd: 'src/assets/fonts',
-		    src: ['*.{svg,eot,ttf,woff,woff2,otf}'],
-		    dest: 'production/assets/fonts'
-		  },
-		  favicons: {
-		    expand: true,
-		    cwd: 'src/',
-		    src: ['*.{png,ico}'],
-		    dest: 'build'
-		  },
-		  faviconsprod: {
-		    expand: true,
-		    cwd: 'src/',
-		    src: ['*.{png,ico}'],
-		    dest: 'production'
-		  },
-		  prodhtml: {
-		    expand: true,
-		    cwd: 'build/',
-		    src: ['**/*.html'],
-		    dest: 'production',
-		    options: {
-		      process: function (content, srcpath) {
-		        return content.replace(/styles.css/g, 'styles.min.css').replace(/main.js/g, 'main.min.js');
-		      },
-		    }
-		  }
-		}
+			fonts: {
+				expand: true,
+				cwd: 'src/assets/fonts',
+				src: ['*.{svg,eot,ttf,woff,woff2,otf}'],
+				dest: 'production/assets/fonts'
+			},
+			favicons: {
+				expand: true,
+				cwd: 'src/',
+				src: ['*.{png,ico}'],
+				dest: 'production'
+			}
+		},
+		replace: {
+			updatePaths: {
+				src: ['production/**/*.html'],
+				overwrite: true,
+				replacements: [{
+					from: /styles.css/g,
+					to: 'styles.min.css'
+				},
+				{
+					from: /main.js/g,
+					to: 'main.min.js'
+				},
+				{
+					from: /<script src="..\/assets\/js\/vendor/g,
+					to: '<script src="assets/js/vendor'
+				},
+				{
+					from: /<script src="..\/..\/assets\/js\/vendor/g,
+					to: '<script src="assets/js/vendor'
+				}]
+			},
+			removeVendorPaths: {
+				src: ['production/**/*.html'],
+				overwrite: true,
+				replacements: [{
+					from: /<script src="assets\/js\/vendor\/modernizr-2.6.2.min.js"><\/script>/g,
+					to: ''
+				},
+				{
+					from: /<script src="assets\/js\/vendor\/bootstrap.min.js"><\/script>/g,
+					to: ''
+				}]
+			}
+		},
+		// this minifies the html once paths and file extensions are updated 
+		minifyHtml: {
+	        dist: {
+	            files: [{
+					expand: true,   
+					cwd: 'production/',
+					src: ['**/*.html'],
+					dest: 'production/'	
+				}]
+	        }
+	    },
+	    php: {
+	        dist: {
+	            options: {
+	                hostname: 'localhost',
+	                port: 9000,
+	                base: 'src', // Project root 
+	                keepalive: true,
+	                open: true
+	            }
+	        }
+	    }
 	});
+	
 	// loadNpmTasks bring in required grunt modules for use within this file
 	grunt.loadNpmTasks('grunt-contrib-sass');
 	grunt.loadNpmTasks('grunt-contrib-cssmin');
@@ -175,15 +165,19 @@ module.exports = function(grunt) {
 	grunt.loadNpmTasks('grunt-contrib-copy');
 	grunt.loadNpmTasks('grunt-php2html');
 	grunt.loadNpmTasks('grunt-contrib-clean');
+	grunt.loadNpmTasks('grunt-text-replace');
+	grunt.loadNpmTasks('grunt-minify-html');
+	grunt.loadNpmTasks('grunt-php');
 	
 	// Within "registerTask"s you are able to build tasks that contain multiple tasks from above
 	// "registerTask('default')" can be run by just running "grunt" within terminal
 	// If you want to run any of the others run "grunt TASKNAME", replace "TASKNAME" with any 
 	// of the names below within terminal
-	grunt.registerTask('default', ['dev', 'watch']);
-	grunt.registerTask('devcopy', ['copy:css', 'copy:js', 'copy:img', 'copy:fonts', 'copy:favicons']);
-	grunt.registerTask('dev', ['clean:general', 'sass', 'php2html', 'devcopy', 'clean:includes']);
-	grunt.registerTask('releasecopy', ['copy:cssminified', 'copy:jsminified', 'copy:imgoptimized', 'copy:fontsprod', 'copy:faviconsprod', 'copy:prodhtml']);
-	grunt.registerTask('release', ['dev', 'cssmin', 'imagemin', 'uglify', 'sass', 'releasecopy']);
+	grunt.registerTask('default', ['watch']);
+	// when working in dev run 'grunt watch' to watch sass as you edit
+	grunt.registerTask('serve', ['php']);
+	grunt.registerTask('releasecopy', ['copy:fonts', 'copy:favicons']);
+	grunt.registerTask('build', ['clean:production', 'sass', 'php2html', 'cssmin', 'uglify', 'releasecopy', 'replace', 'clean:includes']);
+	grunt.registerTask('release', ['clean:production', 'sass', 'php2html', 'cssmin', 'imagemin', 'uglify', 'releasecopy', 'replacePaths', 'minifyHtml', 'clean:includes']);
 	
 }
