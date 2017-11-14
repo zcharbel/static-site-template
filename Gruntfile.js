@@ -1,5 +1,4 @@
 module.exports = function(grunt) {
-	
 	grunt.initConfig({
 		pkg: grunt.file.readJSON('package.json'),
 		// this compiles your sass into css files
@@ -10,7 +9,7 @@ module.exports = function(grunt) {
 				}
 			}
 		},
-		// this takes your css file and minifies it to save weight
+		// this takes your css file and minifies
 		cssmin: {
 			target: {
 				files: {
@@ -22,7 +21,7 @@ module.exports = function(grunt) {
 		uglify: {
 			my_target: {
 				files: {
-					'production/assets/js/main.min.js': ['src/assets/js/vendor/modernizr-2.6.2.min.js', 'src/assets/js/vendor/bootstrap.min.js', 'src/assets/js/main.js']
+					'production/assets/js/main.min.js': ['src/assets/js/vendor/*.js', 'src/assets/js/main.js']
 				}
 			}
 		},
@@ -60,7 +59,9 @@ module.exports = function(grunt) {
 			// this removes the 'production' folder that is output during grunt tasks below
 			production: ['production/'],
 			// this removes the "_includes" folder from being included in your 'production' folder
-			includes: ['production/_includes/']
+			includes: ['production/_includes/'],
+			// this removes the "scss" folder from 'production/assets/' after 'grunt dev' is run
+			scss: ['production/assets/scss/']
 		},
 		// this copies over all fonts and favicons into your 'production' folder
 		copy: {
@@ -75,6 +76,12 @@ module.exports = function(grunt) {
 				cwd: 'src/',
 				src: ['*.{png,ico}'],
 				dest: 'production'
+			},
+			devAssets: {
+				expand: true,
+				cwd: 'src/assets/',
+				src: ['**/*'],
+				dest: 'production/assets/'
 			}
 		},
 		// when making a release, this updates/removes .css and .js filepaths
@@ -114,9 +121,13 @@ module.exports = function(grunt) {
 				}]
 			}
 		},
-		// this minifies the html once paths and file extensions are updated 
+		// this minifies the html 
 		minifyHtml: {
 	        dist: {
+		        options: {
+					removeComments: true,
+					collapseWhitespace: true
+				},
 	            files: [{
 					expand: true,   
 					cwd: 'production/',
@@ -125,7 +136,7 @@ module.exports = function(grunt) {
 				}]
 	        }
 	    },
-	    // this is a local server
+	    // this is a local server for development purposes
 	    php: {
 	        dist: {
 	            options: {
@@ -177,15 +188,15 @@ module.exports = function(grunt) {
 	grunt.loadNpmTasks('grunt-browser-sync');
 	
 	// These are registered task you can run within terminal
-	// if you're running something like MAMP while doing edits 'default' is all you need
-	grunt.registerTask('default', ['watch']);
-	// to run a local php server with browserSync, run 'serve'
-	grunt.registerTask('serve', ['php', 'browserSync', 'watch']);
-	// this is used with the 'build' and 'release' tasks
+	// 'Default' grunt task runs 'serve' task
+	grunt.registerTask('default', ['dev']);
+	// Runs a local php server with browserSync
+	grunt.registerTask('dev', ['php', 'browserSync', 'watch']);
+	// Used with the 'build' and 'release' tasks to copy fonts and favicons
 	grunt.registerTask('copyFontsFavs', ['copy:fonts', 'copy:favicons']);
-	// this is for debugging the output of php2html 
-	grunt.registerTask('build', ['clean:production', 'sass', 'php2html', 'cssmin', 'uglify', 'copyFontsFavs', 'replace', 'clean:includes']);
-	// this is when you are ready for relased which includes minifying HTML, CSS and JS, optimizing images and updates file paths for .min.xxx extensions
+	// This is for debugging output code from PHP
+	grunt.registerTask('build', ['clean:production', 'sass', 'php2html', 'copy', 'clean:includes', 'clean:scss']);
+	// This is when you are ready to push to production. Includes minifying HTML, CSS and JS, optimizing images and updates file paths for .min.xxx extensions
 	grunt.registerTask('release', ['clean:production', 'sass', 'php2html', 'cssmin', 'imagemin', 'uglify', 'copyFontsFavs', 'replace', 'minifyHtml', 'clean:includes']);
 	
 }
