@@ -10,6 +10,7 @@ Please follow the steps below to get set up and running.
     - Grunt - https://gruntjs.com/installing-grunt
     - SASS - http://sass-lang.com/install
     - Node.js - https://nodejs.org/en/download/
+    - NPM - http://blog.npmjs.org/post/85484771375/how-to-install-npm
     - php-cgi - https://www.npmjs.com/package/grunt-php2html#installing-php-cgi
 
 - Run "npm install" within terminal. This will install all packages associated with this build contained within the "package.json" file. More information on NPM can be found here https://docs.npmjs.com/getting-started/what-is-npm.

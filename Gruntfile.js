@@ -17,6 +17,33 @@ module.exports = function(grunt) {
 				}
 			}
 		},
+		// Remove unused CSS from URLs (php, node, etc.)
+		// (Note that`nonull` must be true, or else Grunt
+		// removes remote paths that it can't find locally)
+		uncss: {
+		    dist: {
+			    options: {
+		            ignore: [
+						/(#|\.)baguetteBox(-[a-zA-Z]+)?/,
+						/\w\.in/,
+						'.fade',
+						'.collapse',
+						'.collapsed',
+						'.collapsing',
+						/(#|\.)navbar(-[a-zA-Z]+)?/,
+						/(#|\.)dropdown(-[a-zA-Z]+)?/,
+						/(#|\.)(open)/,
+						/disabled/,
+						/\.no-js/,
+						/\.defer/
+					]
+			    },
+		        files: [{
+		            src: ['production/index.html', 'production/folder/folder-test.html'],
+		            dest: 'production/assets/css/styles.min.css'
+		        }]
+		    }
+		},
 		// this takes your main js file and minifies it to save weight
 		uglify: {
 			my_target: {
@@ -174,6 +201,7 @@ module.exports = function(grunt) {
 	
 	// loadNpmTasks bring in required grunt modules for use within this file
 	grunt.loadNpmTasks('grunt-contrib-sass');
+	grunt.loadNpmTasks('grunt-uncss');
 	grunt.loadNpmTasks('grunt-contrib-cssmin');
 	grunt.loadNpmTasks('grunt-contrib-uglify');
 	grunt.loadNpmTasks('grunt-contrib-watch');
@@ -197,6 +225,6 @@ module.exports = function(grunt) {
 	// This is for debugging output code from PHP
 	grunt.registerTask('build', ['clean:production', 'sass', 'php2html', 'copy', 'clean:includes', 'clean:scss']);
 	// This is when you are ready to push to production. Includes minifying HTML, CSS and JS, optimizing images and updates file paths for .min.xxx extensions
-	grunt.registerTask('release', ['clean:production', 'sass', 'php2html', 'cssmin', 'imagemin', 'uglify', 'copyFontsFavs', 'replace', 'minifyHtml', 'clean:includes']);
+	grunt.registerTask('release', ['clean:production', 'sass',  'php2html', 'cssmin', 'imagemin', 'uglify', 'copyFontsFavs', 'replace', 'minifyHtml', 'clean:includes', 'uncss']);
 	
 }
