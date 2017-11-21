@@ -6,8 +6,9 @@
     <head>
         <meta charset="utf-8">
         <meta http-equiv="X-UA-Compatible" content="IE=edge">
-        <title>Title goes here</title>
-        <meta name="description" content="">
+        <title><?php echo $pageTitle; ?> | Title Here</title>
+        <meta name="description" content="<?php echo $pageDescription; ?>">
+        <meta name="keywords" content="<?php echo $pageKeywords; ?>">
         <meta name="viewport" content="width=device-width, initial-scale=1">
         
         <!-- Place favicon.ico and apple-touch-icon.png in the root directory -->
