@@ -1,0 +1,55 @@
+////////////////////////////////////
+////////// Media Queries ///////////
+////////////////////////////////////
+
+$pp:  320px;
+$pl:  500px;
+$tp:  768px;
+$tn:  900px;
+$tl:  991px;
+$tlp:  1024px;
+$d:   1200px;
+$dl:   1400px;
+
+@mixin at-least($device-width) {
+  @media screen and (min-width: $device-width) {
+    @content 
+  }
+}
+
+@mixin until($device-width) {
+  @media screen and (max-width: $device-width - 1) {
+    @content 
+  }
+}
+
+@mixin between($device-width-min, $device-width-max) {
+  @media (min-width:$device-width-min) and (max-width:$device-width-max - 1) {
+    @content 
+  }
+}
+	
+@mixin transform($transformName, $transformSize) {
+	-moz-transform: $transformName($transformSize);
+	-o-transform: $transformName($transformSize);
+	-ms-transform: $transformName($transformSize);
+	-webkit-transform: $transformName($transformSize);
+	transform: $transformName($transformSize);
+}
+
+@mixin border-radius($radius) {
+	-moz-border-radius: $radius;
+	-o-border-radius: $radius;
+	-ms-border-radius: $radius;
+	-webkit-border-radius: $radius;
+	border-radius: $radius;
+}
+
+@mixin centerElement($position, $direction) {
+	position:$position;
+	$direction:50%;
+	-webkit-transform: translateX(-50%);
+	-moz-transform: translateX(-50%);
+	-ms-transform: translateX(-50%);
+	transform: translateX(-50%);
+}

@@ -7,15 +7,9 @@
         <meta charset="utf-8">
         <meta http-equiv="X-UA-Compatible" content="IE=edge">
         <title>Title goes here</title>
-        <meta name="description" content="CYRAMZA, used in combination with other drugs, can help treat patients with metastatic non-small cell lung cancer (NSCLC), advanced gastric and gastroesophageal junction (GEJ) adenocarcinoma, and metastatic colorectal cancer (mCRC).">
+        <meta name="description" content="">
         <meta name="viewport" content="width=device-width, initial-scale=1">
         
-        <!-- Lillyweb required tags -->
-		<meta name="google-site-verification" content="5PZgaa_HIUYAyEeMwvCEb8bOBqqzLX7LOX31rBXWEBg" />
-		<meta name="msvalidate.01" content="415B200AD3E3B9689BC885965B8C7AF5" />
-		<meta name="robots" content="noarchive,nocache" />
-		<meta name="googlebot" content="noarchive" />
-
         <!-- Place favicon.ico and apple-touch-icon.png in the root directory -->
 
 		<!-- Website Styles -->
