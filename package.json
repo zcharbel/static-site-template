@@ -12,23 +12,19 @@
   "author": "Zach Charbel",
   "license": "Self",
   "devDependencies": {
-    "grunt": "^1.0.1",
+    "grunt": "^1.6.1",
     "grunt-browser-sync": "2.2.0",
-    "grunt-contrib-clean": "^1.1.0",
+    "grunt-contrib-clean": "^2.0.1",
     "grunt-contrib-copy": "^1.0.0",
-    "grunt-contrib-cssmin": "^2.2.1",
-    "grunt-contrib-imagemin": "^2.0.1",
+    "grunt-contrib-cssmin": "^5.0.0",
     "grunt-contrib-rename": "^0.2.0",
-    "grunt-contrib-sass": "^1.0.0",
-    "grunt-contrib-uglify": "^3.1.0",
-    "grunt-contrib-watch": "^1.0.0",
-    "grunt-minify-html": "^3.0.0",
-    "grunt-php": "^1.5.1",
-    "grunt-php2html": "^0.3.0",
-    "grunt-text-replace": "^0.4.0",
-    "grunt-uncss": "^0.7.1"
+    "grunt-contrib-sass": "^2.0.0",
+    "grunt-contrib-uglify": "^5.2.2",
+    "grunt-contrib-watch": "^1.1.0",
+    "grunt-php": "^3.0.0",
+    "grunt-php2html": "^1.0.0",
+    "grunt-text-replace": "^0.4.0"
   },
   "dependencies": {
-    "canvas-prebuilt": "^1.6.5-prerelease.1"
   }
 }
